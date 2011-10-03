@@ -58,15 +58,16 @@ as an rpc function.'''
                  manager = None, **kwargs):
         self.manager = manager
         self.__doc__ = doc
-        self.__name__ = jobname
+        self._name = jobname
         self.ack = ack
         self.kwargs = kwargs
         
-    def __call__(self, request, manager = None, **kwargs):
+    def __call__(self, obj, request, manager = None, **kwargs):
+        #XXX: Luca inserted "obj" here temporarily to make this work
         manager = manager or self.manager
         if manager:
-            return manager.maketask(request,self.__name__,request,ack)\
-                                    (*args,**kwargs)
+            return manager.maketask(request,self._name,self.ack,**self.kwargs)\
+                                    (**kwargs)
         else:
             raise TaskQueueException('Task manager not specified')
 
