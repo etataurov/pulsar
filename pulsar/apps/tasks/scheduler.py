@@ -168,8 +168,10 @@ value ``now`` can be passed.'''
                 is_due, next_time_to_run = entry.is_due(now = now)
                 if is_due:
                     #entry = entry.next()
-                    request = self.make_request(entry.name)
-                    queue.put((request.id,request))
+                    task = self.make_request(entry.name)
+                    tq = task.to_queue()
+                    if tq:
+                        queue.put((None,tq))
                 if next_time_to_run:
                     remaining_times.append(next_time_to_run)
         except RuntimeError:
