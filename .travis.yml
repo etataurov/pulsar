@@ -10,6 +10,7 @@ python:
 install:
   - if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install --use-mirrors argparse unittest2; fi
   - pip install -r requirements_dev.txt --use-mirrors
+  - pip freeze
   - python setup.py install
   - sudo rm -rf /dev/shm && sudo ln -s /run/shm /dev/shm
 
@@ -23,5 +24,4 @@ notifications:
 
 branches:
   only:
-    - master
-    - dev
+    - showpipfreeze
